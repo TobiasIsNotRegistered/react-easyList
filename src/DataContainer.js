@@ -25,7 +25,7 @@ class DataContainer extends React.Component {
     }
 
     updateCurrentListIndex(index) {
-        this.setState({ currentListIndex: index});
+        this.setState({ currentListIndex: index });
     }
 
     addNewItemToCurrentList(item) {
@@ -41,9 +41,19 @@ class DataContainer extends React.Component {
     render() {
         return (
             <div className="DataContainer">
-                <TobiAppBar title={this.state.lists[this.state.currentListIndex].name} lists={this.state.lists} addNewList={(name) => this.addNewList(name)} currentListIndex={this.state.currentListIndex} updateCurrentListIndex={(index) => this.updateCurrentListIndex(index)} />
+                <TobiAppBar
+                    title={this.state.lists[this.state.currentListIndex].name}
+                    lists={this.state.lists}
+                    addNewList={(name) => this.addNewList(name)}
+                    currentListIndex={this.state.currentListIndex}
+                    updateCurrentListIndex={(index) => this.updateCurrentListIndex(index)}
+                />
 
-                <ListContainer suggestions={this.state.suggestions} items={this.state.lists[this.state.currentListIndex].items} addNewItemToCurrentList={(item) => this.addNewItemToCurrentList(item)} />
+                <ListContainer
+                    suggestions={this.state.suggestions}
+                    items={this.state.lists[this.state.currentListIndex].items}
+                    addNewItemToCurrentList={(item) => this.addNewItemToCurrentList(item)}
+                />
             </div>
         )
     }

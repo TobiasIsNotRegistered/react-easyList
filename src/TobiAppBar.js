@@ -105,9 +105,13 @@ class TobiAppBar extends React.Component {
                     >
                     </div>
 
-                    
-                   <ListsFragment handleCloseDrawer={this.toggleDrawer('listDrawer', false)} lists={this.props.lists} handleClickOpenFormDialog={this.handleClickOpenFormDialog} currentListIndex={this.props.currentListIndex} updateCurrentListIndex={(index) => this.props.updateCurrentListIndex(index)}/>
-                </Drawer>   
+
+                    <ListsFragment
+                        handleCloseDrawer={this.toggleDrawer('listDrawer', false)}
+                        lists={this.props.lists} handleClickOpenFormDialog={this.handleClickOpenFormDialog}
+                        currentListIndex={this.props.currentListIndex}
+                        updateCurrentListIndex={(index) => this.props.updateCurrentListIndex(index)} />
+                </Drawer>
 
                 <Dialog
                     open={this.state.formDialog}
@@ -118,9 +122,9 @@ class TobiAppBar extends React.Component {
                     <DialogContent>
                         <DialogContentText>
                             Psst, aktivier de switch wenns okay isch dass dNSA dini Listänä speicheret.
-                            {this.state.nsa ? (<div><br/> Dankö :)</div>) : null} 
-                     </DialogContentText>
-                     <Switch onChange={(event) => {this.setState({nsa:event.target.checked})}}></Switch>
+                            {this.state.nsa ? (<div><br /> Dankö :)</div>) : null}
+                        </DialogContentText>
+                        <Switch onChange={(event) => { this.setState({ nsa: event.target.checked }) }}></Switch>
                         <TextField
                             autoFocus
                             margin="dense"
@@ -128,7 +132,7 @@ class TobiAppBar extends React.Component {
                             label="Listänamä"
                             type="email"
                             fullWidth
-                            onChange={e => {this.setState({newListName: e.target.value})}}
+                            onChange={e => { this.setState({ newListName: e.target.value }) }}
                         />
                     </DialogContent>
                     <DialogActions>
