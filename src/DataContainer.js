@@ -25,7 +25,7 @@ class DataContainer extends React.Component {
     }
 
     updateCurrentListIndex(index) {
-        this.setState({ currentListIndex: index, currentList: this.state.lists[index] });
+        this.setState({ currentListIndex: index});
     }
 
     addNewItemToCurrentList(item) {
@@ -33,8 +33,7 @@ class DataContainer extends React.Component {
         _temp[this.state.currentListIndex].items.push(item);
 
         this.setState({
-            lists: _temp,
-            currentList: _temp[this.state.currentListIndex].items,
+            lists: _temp
         })
     }
 
