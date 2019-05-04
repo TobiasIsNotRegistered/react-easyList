@@ -51,6 +51,15 @@ class App extends React.Component {
     this.setState({ currentListIndex: index, currentList: this.state.lists[index] });
   }
 
+  updateCurrentList(items) {
+    let temp = this.state.lists;
+    temp[this.state.currentListIndex] = items;
+
+    this.setState({
+       lists:  temp
+      })
+  }
+
 
   render() {
     return (
