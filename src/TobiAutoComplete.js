@@ -65,7 +65,7 @@ class TobiAutoComplete extends React.Component {
 
     handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-            this.addNewItem(this.state.input);
+            this.addNewItem();
         }
         if (event.key === "Tab") {
             event.preventDefault();
@@ -78,7 +78,23 @@ class TobiAutoComplete extends React.Component {
         }
     }
 
-    addNewItem(newItemName) {
+    addNewItem() {
+        let newItemName;
+        let deltaLetters;
+
+        if(this.state.output && this.state.output.length > 0 && this.state.output[0].score < 0.1){
+            deltaLetters = this.state.output[0].name.length - this.state.input.length;
+            console.log(deltaLetters);
+            if(deltaLetters >= -1 && deltaLetters <= 1){
+                newItemName = this.state.output[0].name
+            }else{
+                newItemName = this.state.input;
+            }
+            
+        }else{
+            newItemName = this.state.input;
+        }
+
         if (newItemName && newItemName != null && newItemName.replace(/\s/g, '').length !== 0) {
             newItemName = newItemName.replace(/\s/g, '');
             this.props.addItem({ name: newItemName, checked: 0 });
