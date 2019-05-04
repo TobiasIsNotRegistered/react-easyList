@@ -12,6 +12,11 @@ class ListsFragment extends React.Component {
         }
     }
 
+    handleOnItemClick(index){
+        this.props.handleCloseDrawer();
+        this.props.updateCurrentListIndex(index);
+    }
+
     render() {
         return (
             <div className="ListsFragment">
@@ -23,7 +28,7 @@ class ListsFragment extends React.Component {
                     this.props.lists.map((list, index) => {
                         let _selected = this.props.currentListIndex === index ? true : false;
                     return (
-                        <MenuItem selected={_selected} key={index} onClick={() => {this.props.updateCurrentListIndex(index)}}>{list.name}</MenuItem>
+                        <MenuItem selected={_selected} key={index} onClick={() => this.handleOnItemClick(index)}>{list.name}</MenuItem>
                     )
                 })):(
                     (<p>läär</p>)

@@ -3,17 +3,16 @@ import ListView from './ListView';
 import TobiAutoComplete from './TobiAutoComplete';
 
 class ListContainer extends React.Component {
-    constructor(props) {
+    constructor(props){
         super(props);
 
         this.state = {
             items: [],
         }
-
     }
 
     setItemAsChecked(index) {
-        let temp = this.state.items;
+        let temp = this.props.items;
         const numOfCases = 3;
 
         temp[index].checked += 1;
@@ -38,6 +37,7 @@ class ListContainer extends React.Component {
     }
 
     addItemToList(item) {
+        this.props.addNewItemToCurrentList(item);
         this.setState(prevState => ({
             items: [...prevState.items, item]
         }))
@@ -45,20 +45,18 @@ class ListContainer extends React.Component {
 
     removeItemFromList(index) {
         console.log(index)
-        let temp = this.state.items;
+        let temp = this.props.items;
         temp.splice(index, 1);
         this.setState((prevState) => ({
             items: temp
         }))
     }
-
     
-
 
     render() {
         return (
             <div className="ListContainer">
-                <ListView items={this.state.items} removeItem={(index) => this.removeItemFromList(index)} checkItem={(index) => this.setItemAsChecked(index)}></ListView>
+                <ListView items={this.props.items} removeItem={(index) => this.removeItemFromList(index)} checkItem={(index) => this.setItemAsChecked(index)}></ListView>
 
                 <TobiAutoComplete suggestions={this.props.suggestions} addItem={(item) => this.addItemToList(item)} />
             </div>

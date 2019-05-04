@@ -106,7 +106,7 @@ class TobiAppBar extends React.Component {
                     </div>
 
                     
-                   <ListsFragment lists={this.props.lists} handleClickOpenFormDialog={this.handleClickOpenFormDialog} currentListIndex={this.props.currentListIndex} updateCurrentListIndex={(index) => this.props.updateCurrentListIndex(index)}/>
+                   <ListsFragment handleCloseDrawer={this.toggleDrawer('listDrawer', false)} lists={this.props.lists} handleClickOpenFormDialog={this.handleClickOpenFormDialog} currentListIndex={this.props.currentListIndex} updateCurrentListIndex={(index) => this.props.updateCurrentListIndex(index)}/>
                 </Drawer>   
 
                 <Dialog
