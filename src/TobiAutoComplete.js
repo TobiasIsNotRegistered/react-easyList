@@ -14,7 +14,6 @@ class TobiAutoComplete extends React.Component {
             output: _suggestions.slice(0, 10)             //the array of suggestions sorted after score
         }
 
-
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -38,37 +37,30 @@ class TobiAutoComplete extends React.Component {
 
         var results = this.fuse.search(event.target.value);
 
-        if(results && results[0] && results[0].matches && results[0].matches[0].value){     
-            
+        if (results && results[0] && results[0].matches && results[0].matches[0].value) {
+
             results.forEach(res => {
 
-                if(res.score === 0){
-                    res.color='primary'
-                }else if(res.score > 0 && res.score < 0.2){
-                    res.color='secondary'
-                }else{
-                    res.color='default'
+                if (res.score >= 0 && res.score <= 0.1) {
+                    res.color = 'primary'
+                } else if (res.score > 0.1 && res.score < 0.5) {
+                    res.color = 'secondary'
+                } else {
+                    res.color = 'default'
                 }
-
                 res.name = res.matches[0].value
-                
-            })            
-        }else{
-            console.log("Search failed. See " + this.className + " for further information.")
+
+            })
+        } else {
+            console.log("Could not retrieve searchresult!")
         }
-       
-
-     
-
 
         let temp = results.slice(0, 10);
 
         this.setState({
             input: event.target.value,
             output: temp
-        })
-
-
+        });
     };
 
     handleKeyPress = (event) => {
@@ -87,7 +79,8 @@ class TobiAutoComplete extends React.Component {
     }
 
     addNewItem(newItemName) {
-        if (newItemName && newItemName != null) {
+        if (newItemName && newItemName != null && newItemName.replace(/\s/g, '').length !== 0) {
+            newItemName = newItemName.replace(/\s/g, '');
             this.props.addItem({ name: newItemName, checked: 0 });
             this.setState({
                 input: ''
@@ -104,18 +97,19 @@ class TobiAutoComplete extends React.Component {
 
                     <div>
                         <TextField
+                            autoFocus
                             className="TobiAutoComplete__tf_main"
                             onChange={this.handleChange}
-                            label="Input"
-                            helperText="Start typing to get fitting suggestions"
+                            label="Iigabefäld"
+                            helperText="Wenn da inetippsch kriegsch paar passendi Vorschläg! :)"
                             onKeyPress={this.handleKeyPress}
                             value={this.state.input}
                         >
                         </TextField>
 
                         <Button variant='contained' color='primary' onClick={() => {
-                            this.props.addItem({ name: this.state.input })
-                        }}>Add</Button>
+                            this.addNewItem(this.state.input)
+                        }}>Hinzuefüege-böttön</Button>
                     </div>
 
 

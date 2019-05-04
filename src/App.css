@@ -1,9 +1,26 @@
-.App {
-  text-align: center;
+body{
+  margin: 0 !important;
 }
 
-.AppBar{
-  text-align:center;
+.AppBar {
+  justify-content: space-between;
+  color: white;
+ 
+}
+
+.App{
+  
+  height: 100vh;
+}
+
+.addNewListBtn{
+  float:right;
+  margin-top: 10px! important;
+}
+
+.Divider{
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
 }
 
 .LoginFragment__Btns{
@@ -37,4 +54,9 @@
 .LoginFragment:first-child {
   display: block;
   margin: 15px;
+}
+
+
+.ListsFragment{
+  margin: 25px;
 }

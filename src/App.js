@@ -1,21 +1,22 @@
 import React from 'react';
-import TobiAutoComplete from './TobiAutoComplete';
-import ListView from './ListView';
+import ListContainer from './ListContainer.js';
 import './App.css';
 import TobiAppBar from './TobiAppBar.js';
 let firebase = require("firebase/app");
 
-//this class handles the list and its entries but is not supposed to display it.
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      items: [],
-      suggestions: ['Apfel', 'Brot', 'Wasser', 'Milch', 'Schoggi', 'Banane', 'Ovi', 'Spaghetti', 'Teigware', 'Mandarinen', 'Bier', 'Sirup', 'Lauch', 'Zwiebeln', 'Mehl', 'Zucker', 'Pizzateig', 'Pizza', 'Tiefkühlwaren', 'Kaffeepulver', 'Kaffekapseln', 'Honig', 'Tee', 'Gurken', 'Lasagne', 'Aprikosen', 'Toastbrot', 'Brotuufstrich', 'Nutella', 'Confiture', 'Gunfi', 'Brotkranz', 'Käse', 'Poulet', 'Fleisch', 'Sauce (Teigwaren)', 'Suppe', 'Fischstäbli', 'Ananas', 'Amaretto', 'Anis', 'Anchovis', 'Aperol', 'Avocado']
+      lists: [],
+      currentList: [],
+      currentListIndex: 0,
+      suggestions: ['Apfel', 'Brot', 'Wasser', 'Milch', 'Schoggi', 'Banane', 'Ovi', 'Spaghetti', 'Teigware', 'Mandarinen', 'Bier', 'Sirup', 'Lauch', 'Zwiebeln', 'Mehl', 'Zucker', 'Pizzateig', 'Pizza', 'Tiefkühlwaren', 'Kaffeepulver', 'Kaffekapseln', 'Honig', 'Tee', 'Gurken', 'Lasagne', 'Aprikosen', 'Toastbrot', 'Brotuufstrich', 'Nutella', 'Confiture', 'Gunfi', 'Brotkranz', 'Käse', 'Poulet', 'Fleisch', 'Sauce (Teigwaren)', 'Suppe', 'Fischstäbli', 'Ananas', 'Amaretto', 'Anis', 'Anchovis', 'Aperol', 'Avocado', 'Salat']
     }
-  };
+  }
 
   componentDidMount() {
     var firebaseConfig = {
@@ -29,56 +30,35 @@ class App extends React.Component {
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-  }
 
-  setItemAsChecked(index) {
-    let temp = this.state.items;
-    const numOfCases = 3;
-
-    temp[index].checked += 1;
-
-    let state = temp[index].checked % numOfCases;
-
-    switch(state){
-      case 0:
-      temp[index].color = 'default'; break;
-      case 1: 
-      temp[index].color = 'primary'; break;
-      case 2: 
-      temp[index].color = 'secondary'; break;
-      default:
-      temp[index].color = 'default'
+    let _temp = [];
+    for (var i = 0; i < 5; i++) {
+      _temp.push({ name: "biispil " + i });
     }
 
     this.setState({
-      items: temp
+      lists: _temp
     })
-
   }
 
-  addItemToList(item) {
+  addNewList(name) {
     this.setState(prevState => ({
-      items: [...prevState.items, item]
-    }))
-  };
-
-  removeItemFromList(index) {
-    console.log(index)
-    let temp = this.state.items;
-    temp.splice(index, 1);
-    this.setState((prevState) => ({
-      items: temp
+      lists: [...prevState.lists, name]
     }))
   }
+
+  updateCurrentListIndex(index) {
+    this.setState({ currentListIndex: index, currentList: this.state.lists[index] });
+  }
+
 
   render() {
     return (
       <div className="App" >
-        <TobiAppBar title="Einkauf" />
+        <TobiAppBar title="Einkauf" lists={this.state.lists} addNewList={(name) => this.addNewList(name)} currentListIndex={this.state.currentListIndex} updateCurrentListIndex={(index) => this.updateCurrentListIndex(index)} />
 
-        <ListView items={this.state.items} removeItem={(index) => this.removeItemFromList(index)} checkItem={(index) => this.setItemAsChecked(index)}></ListView>
+        <ListContainer suggestions={this.state.suggestions} items={this.state.lists[this.state.currentListIndex]} />
 
-        <TobiAutoComplete suggestions={this.state.suggestions} addItem={(item) => this.addItemToList(item)} />
       </div>
     );
   }

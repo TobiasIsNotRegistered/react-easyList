@@ -1,27 +1,32 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import { Drawer } from '@material-ui/core';
 import LoginFragment from './LoginFragment';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle'
+import ListsFragment from './ListsFragment';
+import { Drawer, Switch } from '@material-ui/core';
 
 
 function ButtonAppBar(props) {
-    const { classes } = props;
     return (
-        <div className={classes.root}>
+        <div>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar className="AppBar" >
                     <Button color="inherit" onClick={() => props.openLogin()}>Login</Button>
 
-                    <Typography variant="h6" color="inherit" className={classes.grow}>
+                    <Typography variant="h6" color="inherit" >
                         {props.title}
                     </Typography>
-                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={() => props.openLists()}>
+                    <IconButton color="inherit" aria-label="Menu" onClick={() => props.openLists()}>
                         <MenuIcon />
                     </IconButton>
 
@@ -31,9 +36,7 @@ function ButtonAppBar(props) {
     );
 }
 
-ButtonAppBar.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
+
 
 
 class TobiAppBar extends React.Component {
@@ -42,19 +45,33 @@ class TobiAppBar extends React.Component {
 
         this.state = {
             loginDrawer: false,
-            listDrawer: false
+            listDrawer: false,
+            formDialog: false
         }
     }
 
-    toggleDrawer = (drawerName, booleanOpen) => () => { 
+    toggleDrawer = (drawerName, booleanOpen) => () => {
         this.setState({
             [drawerName]: booleanOpen,
         });
     };
 
+    handleClickOpenFormDialog = () => {
+        this.setState({ formDialog: true });
+    };
+
+    handleCloseFormDialog = () => {
+        this.setState({ formDialog: false });
+    };
+
+    handleAddList = () => {
+        this.handleCloseFormDialog();
+        this.props.addNewList(this.state.newListName);
+    }
+
     render() {
         return (
-            <div className="AppBar">
+            <div >
                 <ButtonAppBar title={this.props.title} openLogin={this.toggleDrawer('loginDrawer', true)} openLists={this.toggleDrawer('listDrawer', true)} classes={this} />
 
                 <Drawer
@@ -88,8 +105,41 @@ class TobiAppBar extends React.Component {
                     >
                     </div>
 
-                    <p>asdasdasjdbaskjdb</p>
-                </Drawer>
+                    
+                   <ListsFragment lists={this.props.lists} handleClickOpenFormDialog={this.handleClickOpenFormDialog} currentListIndex={this.props.currentListIndex} updateCurrentListIndex={(index) => this.props.updateCurrentListIndex(index)}/>
+                </Drawer>   
+
+                <Dialog
+                    open={this.state.formDialog}
+                    onClose={this.handleCloseFormDialog}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <DialogTitle id="form-dialog-title">Neui Listä</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Psst, aktivier de switch wenns okay isch dass dNSA dini Listänä speicheret.
+                            {this.state.nsa ? (<div><br/> Dankö :)</div>) : null} 
+                     </DialogContentText>
+                     <Switch onChange={(event) => {this.setState({nsa:event.target.checked})}}></Switch>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Listänamä"
+                            type="email"
+                            fullWidth
+                            onChange={e => {this.setState({newListName: e.target.value})}}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleCloseFormDialog} color="primary">
+                            Abbräche
+                    </Button>
+                        <Button onClick={this.handleAddList} color="primary">
+                            Guet so!
+                    </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
     }

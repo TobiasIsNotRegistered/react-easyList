@@ -28,7 +28,7 @@ function ListView(props) {
         )
     } else {
         return (<Paper className="Paper">
-            <Typography variant='title'>das nix gut diese</Typography>
+            <Typography variant='title'>Häh? Lääri listä?</Typography>
         </Paper>)
     }
 }
