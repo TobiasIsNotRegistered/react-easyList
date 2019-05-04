@@ -1,69 +1,74 @@
 import React from 'react'
 import { Chip, Paper, Typography, Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
+import Fuse from 'fuse.js'
 
-
-const options = [];
+const _suggestions = [];
 
 class TobiAutoComplete extends React.Component {
     constructor(props) {
         super(props);
 
-        props.suggestions.map(str => {
-            return (
-                options.push({ name: str, score: 0, perfectMatch: 'secondary' })
-            )
-        });
-
         this.state = {
             input: '',              //the main input for the textfield
-            output: options.slice(0, 10)             //the array of suggestions sorted after score
+            output: _suggestions.slice(0, 10)             //the array of suggestions sorted after score
         }
 
 
         this.handleChange = this.handleChange.bind(this);
     }
 
-    wordContainsSequence(word, sequence) {
-        word = word.toLocaleLowerCase();
-        sequence = sequence.toLocaleLowerCase();
-
-        let score = 0;
-
-        for (let i = 0; i < sequence.length; i++) {
-            if (word.charAt(i) === sequence.charAt(i)) {
-                score++;
-            } else {
-                //TODO: check neighbour characters
-            }
+    componentDidMount() {
+        const options = {
+            keys: ['name'],
+            shouldSort: true,
+            includeScore: true,
+            includeMatches: true,
+            threshold: 0.6,
+            location: 0,
+            distance: 10,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
         }
-        return score;
-    };
+        this.fuse = new Fuse(this.props.suggestions, options);
+    }
+
 
     handleChange = (event) => {
 
-        options.forEach(option => {
-            option.score = this.wordContainsSequence(option.name, event.target.value);
+        var results = this.fuse.search(event.target.value);
 
-            if (option.name.length === option.score && event.target.value.length === option.score) {
-                option.perfectMatch = 'primary'
-            } else if (event.target.value.length === option.score && option.name.length !== option.score) {
-                option.perfectMatch = 'secondary'
-            } else {
-                option.perfectMatch = 'default'
-            }
-        })
+        if(results && results[0] && results[0].matches && results[0].matches[0].value){     
+            
+            results.forEach(res => {
 
-        options.sort((op1, op2) => {
-            return (op2.score - op1.score)
-        });
+                if(res.score === 0){
+                    res.color='primary'
+                }else if(res.score > 0 && res.score < 0.2){
+                    res.color='secondary'
+                }else{
+                    res.color='default'
+                }
 
-        let temp = options.slice(0, 10);
+                res.name = res.matches[0].value
+                
+            })            
+        }else{
+            console.log("Search failed. See " + this.className + " for further information.")
+        }
+       
+
+     
+
+
+        let temp = results.slice(0, 10);
 
         this.setState({
             input: event.target.value,
             output: temp
         })
+
+
     };
 
     handleKeyPress = (event) => {
@@ -82,10 +87,12 @@ class TobiAutoComplete extends React.Component {
     }
 
     addNewItem(newItemName) {
-        this.props.addItem({ name: newItemName });
-        this.setState({
-            input: ''
-        })
+        if (newItemName && newItemName != null) {
+            this.props.addItem({ name: newItemName, checked: 0 });
+            this.setState({
+                input: ''
+            })
+        }
     }
 
     render() {
@@ -118,8 +125,8 @@ class TobiAutoComplete extends React.Component {
                                 <Chip
                                     key={arrayEntry.name}
                                     className="Chip"
-                                    label={arrayEntry.score + " : " + arrayEntry.name}
-                                    color={arrayEntry.perfectMatch}
+                                    label={arrayEntry.name}
+                                    color={arrayEntry.color}
                                     onClick={() => {
                                         this.addNewItem(arrayEntry.name);
                                     }} />

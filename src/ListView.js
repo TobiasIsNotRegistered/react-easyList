@@ -1,10 +1,9 @@
 import React from 'react';
 import { Paper, Chip, Avatar, Typography } from '@material-ui/core';
-import DoneIcon from '@material-ui/icons/Done';
+import ClearIcon from '@material-ui/icons/Clear';
 
 
 function ListView(props) {
-
     if (props.items.length > 0) {
         return (
             <Paper className="Paper">
@@ -13,14 +12,14 @@ function ListView(props) {
                 {props.items.map((item, index) => {
                     return (
                         <Chip 
-                            key={item}
+                            key={index}
                             className="Chip"
                             primary='true'
                             color={item.color}
                             label={item.name}
                             onDelete={() => props.removeItem(index)}
-                            deleteIcon={<DoneIcon />}
-                            avatar={<Avatar>{item.name.charAt(0) + item.name.charAt(1)}</Avatar>}
+                            deleteIcon={<ClearIcon /> }
+                            avatar={<Avatar>{item.name.charAt(0)}</Avatar>}
                             onClick={() => props.checkItem(index)}>
                         </Chip>
                     )

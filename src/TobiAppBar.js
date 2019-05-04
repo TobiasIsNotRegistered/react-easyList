@@ -10,7 +10,6 @@ import { Drawer } from '@material-ui/core';
 import LoginFragment from './LoginFragment';
 
 
-
 function ButtonAppBar(props) {
     const { classes } = props;
     return (
@@ -56,7 +55,7 @@ class TobiAppBar extends React.Component {
     render() {
         return (
             <div className="AppBar">
-                <ButtonAppBar title={this.props.title} openLogin={this.toggleDrawer('loginDrawer', true)} openLists={() => this.toggleDrawer('listDrawer', true)} classes={this} />
+                <ButtonAppBar title={this.props.title} openLogin={this.toggleDrawer('loginDrawer', true)} openLists={this.toggleDrawer('listDrawer', true)} classes={this} />
 
                 <Drawer
                     anchor="left"

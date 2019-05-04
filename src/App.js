@@ -33,15 +33,22 @@ class App extends React.Component {
 
   setItemAsChecked(index) {
     let temp = this.state.items;
+    const numOfCases = 3;
 
-    if (temp[index].checked) {
-      temp[index].checked = false;
-      temp[index].color = 'secondary';
-    } else {
-      temp[index].checked = true;
-      temp[index].color = 'primary';
+    temp[index].checked += 1;
+
+    let state = temp[index].checked % numOfCases;
+
+    switch(state){
+      case 0:
+      temp[index].color = 'default'; break;
+      case 1: 
+      temp[index].color = 'primary'; break;
+      case 2: 
+      temp[index].color = 'secondary'; break;
+      default:
+      temp[index].color = 'default'
     }
-
 
     this.setState({
       items: temp
@@ -49,9 +56,9 @@ class App extends React.Component {
 
   }
 
-  addItemToList(itemName) {
+  addItemToList(item) {
     this.setState(prevState => ({
-      items: [...prevState.items, itemName]
+      items: [...prevState.items, item]
     }))
   };
 
