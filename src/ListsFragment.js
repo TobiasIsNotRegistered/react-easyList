@@ -1,7 +1,6 @@
 import React from 'react';
 import { Typography, Fab, Divider, MenuItem } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import ListView from './ListView';
 
 class ListsFragment extends React.Component {
     constructor(props) {

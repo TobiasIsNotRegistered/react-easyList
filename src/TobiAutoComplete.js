@@ -65,7 +65,7 @@ class TobiAutoComplete extends React.Component {
 
     handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-            this.addNewItem();
+            this.addNewItemByKeyPress();
         }
         if (event.key === "Tab") {
             event.preventDefault();
@@ -78,13 +78,12 @@ class TobiAutoComplete extends React.Component {
         }
     }
 
-    addNewItem() {
+    addNewItemByKeyPress() {
         let newItemName;
         let deltaLetters;
 
         if(this.state.output && this.state.output.length > 0 && this.state.output[0].score < 0.1){
             deltaLetters = this.state.output[0].name.length - this.state.input.length;
-            console.log(deltaLetters);
             if(deltaLetters >= -1 && deltaLetters <= 1){
                 newItemName = this.state.output[0].name
             }else{
@@ -102,6 +101,10 @@ class TobiAutoComplete extends React.Component {
                 input: ''
             })
         }
+    }
+
+    addNewItemByClick(_itemName){
+        this.props.addItem({name: _itemName, checked: 0});
     }
 
     render() {
@@ -124,7 +127,7 @@ class TobiAutoComplete extends React.Component {
                         </TextField>
 
                         <Button variant='contained' color='primary' onClick={() => {
-                            this.addNewItem(this.state.input)
+                            this.addNewItemByKeyPress(this.state.input)
                         }}>Hinzuefüege-böttön</Button>
                     </div>
 
@@ -138,7 +141,7 @@ class TobiAutoComplete extends React.Component {
                                     label={arrayEntry.name}
                                     color={arrayEntry.color}
                                     onClick={() => {
-                                        this.addNewItem(arrayEntry.name);
+                                        this.addNewItemByClick(arrayEntry.name);
                                     }} />
                             )
                         })}

@@ -72,7 +72,7 @@ class TobiAppBar extends React.Component {
     render() {
         return (
             <div >
-                <ButtonAppBar title={this.props.title} openLogin={this.toggleDrawer('loginDrawer', true)} openLists={this.toggleDrawer('listDrawer', true)} classes={this} />
+                <ButtonAppBar title={this.props.title ? this.props.title : 'Unbenannt'} openLogin={this.toggleDrawer('loginDrawer', true)} openLists={this.toggleDrawer('listDrawer', true)} classes={this} />
 
                 <Drawer
                     anchor="left"
