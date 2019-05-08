@@ -1,21 +1,15 @@
 import React from 'react';
-import ListContainer from './ListContainer.js';
 import './App.css';
-import TobiAppBar from './TobiAppBar.js';
 import DataContainer from './DataContainer.js';
 let firebase = require("firebase/app");
 
-
+//TODO: 
+// restrict users from adding the same item twice - firebase uses the name as key
+// check if you want to be able to change your list name
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-    }
-  }
-
-  componentDidMount() {
+  componentWillMount() {
     var firebaseConfig = {
       apiKey: "AIzaSyCFUhO6W43CsO4_jebl0G2xMf9vasJ6jo4",
       authDomain: "einkauf-b61cc.firebaseapp.com",
@@ -27,16 +21,12 @@ class App extends React.Component {
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-
   }
-
 
   render() {
     return (
       <div className="App" >
-
-        <DataContainer />
-
+        <DataContainer firebase={firebase}/>
       </div>
     );
   }

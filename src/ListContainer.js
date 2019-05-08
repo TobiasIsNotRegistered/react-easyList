@@ -41,12 +41,12 @@ class ListContainer extends React.Component {
         this.props.removeItemFromCurrentList(index);
     }
 
-    setNewListName(){   
-        this.props.setNewListName(this.state.newListName);    
+    setNewListName() {
+        this.props.setNewListName(this.state.newListName);
         this.handleCloseEditListDialog();
     }
 
-    removeCurrentList(){
+    removeCurrentList() {
         this.props.removeCurrentList();
         this.handleCloseEditListDialog();
     }
@@ -74,7 +74,7 @@ class ListContainer extends React.Component {
                             autoFocus
                             margin="dense"
                             id="name"
-                            label="neiä Listänamä"
+                            label="neuä Listänamä"
                             type="email"
                             fullWidth
                             onChange={e => { this.setState({ newListName: e.target.value }) }}

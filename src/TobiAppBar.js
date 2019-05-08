@@ -21,9 +21,9 @@ function ButtonAppBar(props) {
         <div>
             <AppBar position="static">
                 <Toolbar className="AppBar" >
-                    <Button color="inherit" onClick={() => props.openLogin()}>Login</Button>
+                    <Button color="inherit" onClick={() => props.openLogin()}>{props.currentUser ? props.currentUser.email : 'iilogge'}</Button>
 
-                    <Typography variant="h6" color="inherit" >
+                    <Typography variant="h6" color="inherit" noWrap={true} >
                         {props.title}
                     </Typography>
                     <IconButton color="inherit" aria-label="Menu" onClick={() => props.openLists()}>
@@ -67,12 +67,20 @@ class TobiAppBar extends React.Component {
     handleAddList = () => {
         this.handleCloseFormDialog();
         this.props.addNewList(this.state.newListName);
+
     }
+
+    handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            this.handleAddList();
+        }
+    }
+
 
     render() {
         return (
             <div >
-                <ButtonAppBar title={this.props.title ? this.props.title : 'Unbenannt'} openLogin={this.toggleDrawer('loginDrawer', true)} openLists={this.toggleDrawer('listDrawer', true)} classes={this} />
+                <ButtonAppBar currentUser={this.props.currentUser} title={this.props.title ? this.props.title : 'Unbenannt'} openLogin={this.toggleDrawer('loginDrawer', true)} openLists={this.toggleDrawer('listDrawer', true)} classes={this} />
 
                 <Drawer
                     anchor="left"
@@ -126,6 +134,7 @@ class TobiAppBar extends React.Component {
                         </DialogContentText>
                         <Switch onChange={(event) => { this.setState({ nsa: event.target.checked }) }}></Switch>
                         <TextField
+                            onKeyPress={this.handleKeyPress}
                             autoFocus
                             margin="dense"
                             id="name"

@@ -32,7 +32,6 @@ class LoginFragment extends React.Component {
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 _self.setState({ status: 'logged in as ' + user.email, currentUser: user })
-                console.log("Auth state changed!");
             } else {
                 console.log("currentUser : null")
                 _self.setState({
@@ -64,7 +63,7 @@ class LoginFragment extends React.Component {
 
         return (
             <div className="LoginFragment">
-                <Typography variant="title">Login</Typography>
+                <Typography variant="h6">Login</Typography>
 
                 <Typography variant="caption">{this.state.status}</Typography>
 

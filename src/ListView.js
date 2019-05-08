@@ -9,7 +9,7 @@ function ListView(props) {
     if (props.items.length > 0) {
         return (
             <Paper className="Paper">
-                <Typography variant='headline' ></Typography>
+                <Typography variant='h5' ></Typography>
 
                 {props.items.map((item, index) => {
                     let _color;
@@ -34,7 +34,7 @@ function ListView(props) {
                             label={item.name}
                             onDelete={() => props.removeItem(index)}
                             deleteIcon={<ClearIcon />}
-                            avatar={<Avatar>{item.name.charAt(0)}</Avatar>}
+                            avatar={<Avatar>{item.name.charAt(0).toUpperCase()}</Avatar>}
                             onClick={() => props.checkItem(index)}>
                         </Chip>
                     )
@@ -43,7 +43,7 @@ function ListView(props) {
         )
     } else {
         return (<Paper className="Paper">
-            <Typography variant='title'>Häh? Lääri listä?</Typography>
+            <Typography variant='subtitle1'>Häh? Lääri listä?</Typography>
         </Paper>)
     }
 }

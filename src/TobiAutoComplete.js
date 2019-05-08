@@ -30,6 +30,7 @@ class TobiAutoComplete extends React.Component {
             minMatchCharLength: 1,
         }
         this.fuse = new Fuse(this.props.suggestions, options);
+        this.MAX_LENGTH = 24;
     }
 
 
@@ -58,7 +59,7 @@ class TobiAutoComplete extends React.Component {
         let temp = results.slice(0, 10);
 
         this.setState({
-            input: event.target.value,
+            input: event.target.value.substring(0, this.MAX_LENGTH),
             output: temp
         });
     };
@@ -82,20 +83,20 @@ class TobiAutoComplete extends React.Component {
         let newItemName;
         let deltaLetters;
 
-        if(this.state.output && this.state.output.length > 0 && this.state.output[0].score < 0.1){
+        if (this.state.output && this.state.output.length > 0 && this.state.output[0].score < 0.1) {
             deltaLetters = this.state.output[0].name.length - this.state.input.length;
-            if(deltaLetters >= -1 && deltaLetters <= 1){
+            if (deltaLetters >= -1 && deltaLetters <= 1) {
                 newItemName = this.state.output[0].name
-            }else{
+            } else {
                 newItemName = this.state.input;
             }
-            
-        }else{
+
+        } else {
             newItemName = this.state.input;
         }
 
         if (newItemName && newItemName != null && newItemName.replace(/\s/g, '').length !== 0) {
-            newItemName = newItemName.replace(/\s/g, '');
+            newItemName = this.upperCaseFirstLetter(newItemName);
             this.props.addItem({ name: newItemName, checked: 0 });
             this.setState({
                 input: ''
@@ -103,8 +104,13 @@ class TobiAutoComplete extends React.Component {
         }
     }
 
-    addNewItemByClick(_itemName){
-        this.props.addItem({name: _itemName, checked: 0});
+    upperCaseFirstLetter(string) {
+        string = string.trim();
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    addNewItemByClick(_itemName) {
+        this.props.addItem({ name: _itemName, checked: 0 });
     }
 
     render() {
@@ -112,7 +118,7 @@ class TobiAutoComplete extends React.Component {
             <div className="TobiAutoComplete">
                 <Paper className="Paper">
 
-                    <Typography variant='headline' ></Typography>
+                    <Typography variant='h5' ></Typography>
 
                     <div>
                         <TextField

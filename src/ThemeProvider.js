@@ -9,18 +9,6 @@ class ThemeProvider extends React.Component {
         super(props);
 
         this.theme = createMuiTheme({
-            overrides: {
-                MuiMenuItem: {
-                    "selected": {
-                        "backgroundColor": "orange",
-                        "root": {
-                            '&$selected': {
-                                "backgroundColor": "orange",
-                            },
-                        },
-                    },
-                },
-            },
             typography: {
                 useNextVariants: true,
             },

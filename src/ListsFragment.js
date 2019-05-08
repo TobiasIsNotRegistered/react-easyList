@@ -11,7 +11,7 @@ class ListsFragment extends React.Component {
         }
     }
 
-    handleOnItemClick(index){
+    handleOnItemClick(index) {
         this.props.handleCloseDrawer();
         this.props.updateCurrentListIndex(index);
     }
@@ -19,20 +19,25 @@ class ListsFragment extends React.Component {
     render() {
         return (
             <div className="ListsFragment">
-                <Typography variant="headline">Dini listänä</Typography>
+                <Typography variant="h5">Dini listänä</Typography>
                 <Divider className="Divider" />
 
-                
+
                 {this.props.lists.length > 0 ? (
                     this.props.lists.map((list, index) => {
                         let _selected = this.props.currentListIndex === index ? true : false;
-                    return (
-                        <MenuItem selected={_selected} key={index} onClick={() => this.handleOnItemClick(index)}>{list.name}</MenuItem>
-                    )
-                })):(
-                    (<p>läär</p>)
-                )}
-                
+                        return (
+                            <MenuItem
+                                selected={_selected}
+                                key={index}
+                                onClick={() => this.handleOnItemClick(index)}>
+                                <Typography variant='body1' noWrap={true}>{list.name}</Typography>
+                            </MenuItem>
+                        )
+                    })) : (
+                        (<p>läär</p>)
+                    )}
+
                 <Fab className="addNewListBtn" color='primary' onClick={() => this.props.handleClickOpenFormDialog()}><AddIcon /></Fab>
             </div>
         )
