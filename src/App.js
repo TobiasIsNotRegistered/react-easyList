@@ -6,6 +6,14 @@ let firebase = require("firebase/app");
 //TODO: 
 // restrict users from adding the same item twice - firebase uses the name as key (...still? check necessary)
 // set 'checked' property of item on DB is inefficient as I have to update the entire array. a) do not store 'checked' status on DB or b) build the array out of references and change the item itself or c) think about new strategy to store the data?
+// check if you want support liveupdate?
+
+
+/************INFO********** */
+/*
+Before deploying, always make sure to invoke 'npm run build'!
+If you don't, changes won't be applied to the host server.
+*/
 
 class App extends React.Component {
 
