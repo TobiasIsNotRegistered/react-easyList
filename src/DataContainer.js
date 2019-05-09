@@ -34,9 +34,7 @@ class DataContainer extends React.Component {
 
                 _self.props.firebase.firestore().collection(user.email.replace('.', ',')).get().then(querySnapshot => {
                     querySnapshot.forEach(doc => {
-                        console.log(doc.id + " " + doc.data().items);
                         let _list = { name: doc.data().name, items: doc.data().items };
-
                         _temp.push(_list);
 
                         _self.setState({
@@ -157,7 +155,6 @@ class DataContainer extends React.Component {
 
     removeItemFromCurrentList(index) {
         let _temp = this.state.lists;
-        let itemName = this.state.lists[this.state.currentListIndex].items[index].name;
         let currentListName = this.state.lists[this.state.currentListIndex] ? this.state.lists[this.state.currentListIndex].name : this.state.defaultListName;
 
         //remove locally
