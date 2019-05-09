@@ -1,7 +1,7 @@
 import React from 'react'
 import TobiAppBar from './TobiAppBar';
 import ListContainer from './ListContainer';
-import 'firebase/firestore'
+import 'firebase/firestore';
 
 class DataContainer extends React.Component {
     constructor(props) {
@@ -58,10 +58,15 @@ class DataContainer extends React.Component {
             let currentListName = this.state.lists[this.state.currentListIndex] ? this.state.lists[this.state.currentListIndex].name : this.state.defaultListName;
 
             //delete from firestore
-            if(this.state.currentUser){
-                this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ','))
-                .doc(currentListName).delete().then(console.log("delete list from firestore")).catch(error => console.log(error.message));                
-            }         
+            if (this.state.currentUser) {
+                this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ',')).where('name', '==', currentListName).get().then(
+                    querySnapshot => {
+                        querySnapshot.forEach(doc => {
+                            doc.ref.delete().then(console.log("delete list from firestore")).catch(error => console.log(error.message));
+                        })
+                    }
+                )
+            }
 
             _temp.splice(this.state.currentListIndex, 1);
             let newCurrentListIndex = this.state.currentListIndex;
@@ -80,7 +85,7 @@ class DataContainer extends React.Component {
             lists: [...prevState.lists, newList]
         }))
 
-        if(this.state.currentUser){
+        if (this.state.currentUser) {
             this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ',')).doc(_name).set({
                 name: newList.name, items: newList.items
             })
@@ -109,19 +114,23 @@ class DataContainer extends React.Component {
 
         //add to db
         if (this.state.currentUser) {
-            let currentListRef = this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ',')).doc(currentListName);
-
-            currentListRef.get().then(snapshot => {
-                if (snapshot.exists) {
-                    currentListRef.update({ items: this.props.firebase.firestore.FieldValue.arrayUnion(item) })
-                        .then(console.log("successfully updated array in doc"))
-                        .catch(e => console.log(e.message))
-                } else {
-                    currentListRef.set({ name: currentListName, items: this.props.firebase.firestore.FieldValue.arrayUnion(item) })
-                        .then(console.log("successfully created new array in doc"))
-                        .catch(e => console.log(e.message))
+            this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ',')).where('name', '==', currentListName).get().then(
+                querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        doc.ref.get().then(snapshot => {
+                            if (snapshot.exists) {
+                                doc.ref.update({ items: this.props.firebase.firestore.FieldValue.arrayUnion(item) })
+                                    .then(console.log("successfully updated array in doc"))
+                                    .catch(e => console.log(e.message))
+                            } else {
+                                doc.ref.set({ name: currentListName, items: this.props.firebase.firestore.FieldValue.arrayUnion(item) })
+                                    .then(console.log("successfully created new array in doc"))
+                                    .catch(e => console.log(e.message))
+                            }
+                        })
+                    })
                 }
-            })
+            )
         }
     }
 
@@ -142,12 +151,17 @@ class DataContainer extends React.Component {
         //aupdate DB with local list
         let currentList = this.state.lists[this.state.currentListIndex];
         if (this.state.currentUser) {
-            this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ',')).doc(currentListName).update({
-                items: currentList.items,
-            }).then(
-                console.log('sucessfully updated checked of item')
-            ).catch(e => {
-                console.log("error updating checked of item: " + e.message)
+            let listRef = this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ',')).where('name', '==', currentListName);
+            listRef.get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    doc.ref.update({
+                        items: currentList.items,
+                    }).then(
+                        console.log('sucessfully updated checked of item')
+                    ).catch(e => {
+                        console.log("error updating checked of item: " + e.message)
+                    })
+                })
             })
         }
 
@@ -165,11 +179,15 @@ class DataContainer extends React.Component {
 
         //update DB with local list
         if (this.state.currentUser) {
-            this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ',')).doc(currentListName).update({
-                items: this.state.lists,
-            }).catch(function (error) {
-                console.error("Error removing document: ", error);
-            });
+            this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ',')).where('name', '==', currentListName).get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    doc.ref.update({
+                        items: this.state.lists,
+                    }).catch(function (error) {
+                        console.error("Error removing document: ", error);
+                    });
+                })
+            })
         }
     }
 
@@ -180,7 +198,7 @@ class DataContainer extends React.Component {
         if (name && name.length > 0) {
             _temp[this.state.currentListIndex].name = name;
         } else {
-            _temp[this.state.currentListIndex].name = 'nödmal das chasch';
+            _temp[this.state.currentListIndex].name = this.state.defaultListName;
         }
 
         this.setState({
@@ -188,10 +206,14 @@ class DataContainer extends React.Component {
         })
 
         //update on DB
-        if(this.state.currentUser){
-            this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ',')).doc(currentListName).update({
-                name: this.state.lists[this.state.currentListIndex].name
-            }).then(console.log("successfully updated listname")).catch(e => console.log(e.message));
+        if (this.state.currentUser) {
+            this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ',')).where('name', '==', currentListName).get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    doc.ref.update({
+                        name: this.state.lists[this.state.currentListIndex].name
+                    }).then(console.log("successfully updated listname")).catch(e => console.log(e.message));
+                })
+            })
         }
     }
 
