@@ -5,13 +5,10 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 function ListView(props) {
 
-
-    if (props.items.length > 0) {
+    if (props.list && props.list.items && props.list.items.length > 0) {
         return (
             <Paper className="Paper">
-                <Typography variant='h5' ></Typography>
-
-                {props.items.map((item, index) => {
+                {props.list.items.map((item, index) => {
                     let _color;
                     let state = item.checked % 3;
                     switch (state) {

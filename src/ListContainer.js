@@ -54,7 +54,7 @@ class ListContainer extends React.Component {
     render() {
         return (
             <div className="ListContainer">
-                <ListView items={this.props.items} removeItem={(index) => this.removeItemFromList(index)} checkItem={(index) => this.setItemAsChecked(index)}></ListView>
+                <ListView list={this.props.list} removeItem={(index) => this.removeItemFromList(index)} checkItem={(index) => this.setItemAsChecked(index)}></ListView>
 
                 <TobiAutoComplete suggestions={this.props.suggestions} addItem={(item) => this.addItemToList(item)} />
 
