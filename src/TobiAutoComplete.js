@@ -3,17 +3,19 @@ import { Chip, Paper, Typography, Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Fuse from 'fuse.js'
 
-const _suggestions = [];
+
+const exampleSuggestion = "Biispiel Vorschlag ;)";
+const maxLengthSuggestion= 25;
 
 class TobiAutoComplete extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.state = {            
             input: '',              //the main input for the textfield
-            output: _suggestions.slice(0, 10)             //the array of suggestions sorted after score
+            output: [{name: exampleSuggestion, color:'default'}]           //the array of suggestions sorted after score
         }
-
+       
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -31,6 +33,8 @@ class TobiAutoComplete extends React.Component {
         }
         this.fuse = new Fuse(this.props.suggestions, options);
         this.MAX_LENGTH = 24;
+
+
     }
 
 
@@ -53,7 +57,8 @@ class TobiAutoComplete extends React.Component {
 
             })
         } else {
-            console.log("Could not retrieve searchresult!")
+            console.log("Could not retrieve searchresult!");
+            results = [{name: exampleSuggestion, color: 'default'}];
         }
 
         let temp = results.slice(0, 10);
@@ -113,12 +118,38 @@ class TobiAutoComplete extends React.Component {
         this.props.addItem({ name: _itemName, checked: 0 });
     }
 
+    addEllipsisToName(name){
+        if(name.length > maxLengthSuggestion){
+            name = name.substring(0, maxLengthSuggestion) + "...";
+        }
+        return name;
+    }
+
+    
     render() {
+
         return (
             <div className="TobiAutoComplete">
                 <Paper className="Paper">
+                    <Typography variant='subtitle2' >Vorschläg: </Typography>
+                    <div className="TobiAutoComplete__container_suggestions">
+                        {this.state.output.map((arrayEntry, index) => {
+                            return (
+                                <Chip
+                                    key={index}
+                                    className="Chip"
+                                    label={this.addEllipsisToName(arrayEntry.name)}
+                                    color={arrayEntry.color}
+                                    onClick={() => {
+                                        this.addNewItemByClick(arrayEntry.name);
+                                    }} />
+                            )
+                        })}
+                    </div>
+                </Paper>
+                <Paper className="Paper">
 
-                    <Typography variant='h5' ></Typography>
+
 
                     <div>
                         <TextField
@@ -138,20 +169,7 @@ class TobiAutoComplete extends React.Component {
                     </div>
 
 
-                    <div className="TobiAutoComplete__container_suggestions">
-                        {this.state.output.map((arrayEntry) => {
-                            return (
-                                <Chip
-                                    key={arrayEntry.name}
-                                    className="Chip"
-                                    label={arrayEntry.name}
-                                    color={arrayEntry.color}
-                                    onClick={() => {
-                                        this.addNewItemByClick(arrayEntry.name);
-                                    }} />
-                            )
-                        })}
-                    </div>
+
                 </Paper>
             </div>
         )
