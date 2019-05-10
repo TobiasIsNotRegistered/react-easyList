@@ -168,6 +168,7 @@ class DataContainer extends React.Component {
     }
 
     removeItemFromCurrentList(index) {
+        let _self = this;
         let _temp = this.state.lists;
         let currentListName = this.state.lists[this.state.currentListIndex] ? this.state.lists[this.state.currentListIndex].name : this.state.defaultListName;
 
@@ -182,7 +183,7 @@ class DataContainer extends React.Component {
             this.props.firebase.firestore().collection(this.state.currentUser.email.replace('.', ',')).where('name', '==', currentListName).get().then(querySnapshot => {
                 querySnapshot.forEach(doc => {
                     doc.ref.update({
-                        items: this.state.lists,
+                        items: _self.state.lists[_self.state.currentListIndex].items
                     }).catch(function (error) {
                         console.error("Error removing document: ", error);
                     });
