@@ -1,9 +1,12 @@
 import React from 'react';
-import { TextField, Typography, Button } from '@material-ui/core';
+import { TextField, Typography, Button, FormControl, InputLabel, Input, InputAdornment, IconButton } from '@material-ui/core';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
 let firebase = require("firebase/app");
 require("firebase/auth");
 
-const LoginText = 'Login in will enable you to save and edit lists!'
+const LoginText = 'Wenn igloggt bisch chasch dini Listä speichere und uf allne Browser nutze :)'
 
 class LoginFragment extends React.Component {
     constructor(props) {
@@ -31,7 +34,7 @@ class LoginFragment extends React.Component {
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                _self.setState({ status: 'logged in as ' + user.email, currentUser: user })
+                _self.setState({ status: 'igloggt mit email: ' + user.email, currentUser: user })
             } else {
                 console.log("currentUser : null")
                 _self.setState({
@@ -59,26 +62,67 @@ class LoginFragment extends React.Component {
         }
     }
 
+    attemptRegister() {
+        const _self = this;
+
+        if (this.state.currentUser) {
+            return;
+        } else {
+            firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.pwd).catch(function (error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log("ErrorCode: " + errorCode + ", Message: " + errorMessage);
+                _self.setState({
+                    status: errorMessage
+                })
+            });
+        }
+    }
+
+    handleClickShowPassword = () => {
+        this.setState(state => ({ showPassword: !state.showPassword }));
+      };
+
     render() {
 
         return (
             <div className="LoginFragment">
-                <Typography variant="h6">Login</Typography>
+                <Typography variant="h6">Login/Registrierä</Typography>
 
                 <Typography variant="caption">{this.state.status}</Typography>
 
-
                 <TextField label="Email" onChange={(e) => this.setState({ email: e.target.value })} onKeyPress={this.handleKeyPress}></TextField>
-
-                <TextField label="Password" onChange={(e) => this.setState({ pwd: e.target.value })} onKeyPress={this.handleKeyPress}></TextField>
+                
+                <FormControl >
+                    <InputLabel htmlFor="adornment-password">Password</InputLabel>
+                    <Input
+                        id="adornment-password"
+                        type={this.state.showPassword ? 'text' : 'password'}
+                        value={this.state.password}
+                        onChange={(e) => this.setState({ pwd: e.target.value })}
+                        onKeyDown={(event) => this.handleKeyPress(event)}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="Toggle password visibility"
+                                    onClick={this.handleClickShowPassword}
+                                >
+                                    {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                </FormControl>
 
 
                 <div className="LoginFragment__Btns">
-                    <Button variant="contained" color="secondary" onClick={() => this.props.toggleDrawer()}>Close</Button>
-                    <Button variant="contained" color="primary" onClick={() => this.attemptLogin()}>{this.state.currentUser ? 'Logout' : 'Login'}</Button>
+                    <Button variant="contained" color="primary" onClick={() => this.attemptLogin()}>{this.state.currentUser ? 'Uslogge' : 'Ilogge'}</Button>
+                    <Button variant="contained" color="secondary" onClick={() => this.attemptRegister()}>Registrierä</Button>
+                    <Button variant="contained" color="default" onClick={() => this.props.toggleDrawer()}>Zrugg</Button>
                 </div>
 
-
+                <br />
             </div>
         )
     }

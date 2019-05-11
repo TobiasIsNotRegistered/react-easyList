@@ -3,6 +3,15 @@ import { Paper, Chip, Avatar, Typography } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 
 
+const maxLengthSuggestion = 25;
+function addEllipsisToName(name) {
+    if (name.length > maxLengthSuggestion) {
+        name = name.substring(0, maxLengthSuggestion) + "...";
+    }
+    return name;
+}
+
+
 function ListView(props) {
 
     if (props.list && props.list.items && props.list.items.length > 0) {
@@ -28,7 +37,7 @@ function ListView(props) {
                             className="Chip"
                             primary='true'
                             color={_color}
-                            label={item.name}
+                            label={addEllipsisToName(item.name)}
                             onDelete={() => props.removeItem(index)}
                             deleteIcon={<ClearIcon />}
                             avatar={<Avatar>{item.name.charAt(0).toUpperCase()}</Avatar>}

@@ -53,10 +53,11 @@ class ListContainer extends React.Component {
 
     render() {
         return (
-            <div className="ListContainer">
-                <ListView list={this.props.list} removeItem={(index) => this.removeItemFromList(index)} checkItem={(index) => this.setItemAsChecked(index)}></ListView>
+            <div className="ListContainer">              
 
                 <TobiAutoComplete suggestions={this.props.suggestions} addItem={(item) => this.addItemToList(item)} />
+
+                <ListView list={this.props.list} removeItem={(index) => this.removeItemFromList(index)} checkItem={(index) => this.setItemAsChecked(index)}></ListView>
 
                 <Fab className="editCurrentListBtn" color='primary' onClick={() => this.handleClickOpenFormDialog()}><EditIcon /></Fab>
 

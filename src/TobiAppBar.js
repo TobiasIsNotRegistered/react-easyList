@@ -21,7 +21,7 @@ function ButtonAppBar(props) {
         <div>
             <AppBar position="static">
                 <Toolbar className="AppBar" >
-                    <Button color="inherit" onClick={() => props.openLogin()}>{props.currentUser ? props.currentUser.email : 'iilogge'}</Button>
+                    <Button color="inherit" onClick={() => props.openLogin()}>{props.currentUser ? 'uslogge' : 'iilogge'}</Button>
 
                     <Typography variant="h6" color="inherit" noWrap={true} >
                         {props.title}
@@ -130,7 +130,7 @@ class TobiAppBar extends React.Component {
                     <DialogContent>
                         <DialogContentText>
                             Psst, aktivier de switch wenns okay isch dass dNSA dini Listänä speicheret.
-                            {this.state.nsa ? (<div><br /> Dankö :)</div>) : null}
+                            {this.state.nsa ? ' Nice! ' : null}
                         </DialogContentText>
                         <Switch onChange={(event) => { this.setState({ nsa: event.target.checked }) }}></Switch>
                         <TextField
