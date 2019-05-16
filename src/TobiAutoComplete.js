@@ -1,11 +1,14 @@
 import React from 'react'
-import { Chip, Paper, Button } from '@material-ui/core';
+import { Chip, Paper, Button, Grid, Typography, Divider } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import Fuse from 'fuse.js'
+import Fuse from 'fuse.js';
+import AddIcon from '@material-ui/icons/Add';
+import MediaQuery from 'react-responsive';
 
 
 const exampleSuggestion = "Biispiel Vorschlag ;)";
 const maxLengthSuggestion = 25;
+
 
 class TobiAutoComplete extends React.Component {
     constructor(props) {
@@ -32,9 +35,7 @@ class TobiAutoComplete extends React.Component {
             minMatchCharLength: 1,
         }
         this.fuse = new Fuse(this.props.suggestions, options);
-        this.MAX_LENGTH = 24;
-
-
+        this.MAX_LENGTH = 128;
     }
 
 
@@ -61,7 +62,12 @@ class TobiAutoComplete extends React.Component {
             results = [{ name: exampleSuggestion, color: 'default' }];
         }
 
-        let temp = results.slice(0, 5);
+        let temp;
+        if (window.screen.width > window.screen.height) {
+            temp = results.slice(0, 10);
+        } else {
+            temp = results.slice(0, 5);
+        }
 
         this.setState({
             input: event.target.value.substring(0, this.MAX_LENGTH),
@@ -131,39 +137,53 @@ class TobiAutoComplete extends React.Component {
         return (
             <div className="TobiAutoComplete">
                 <Paper className="Paper">
-                    <div>
-                        <TextField
-                            autoFocus
-                            className="TobiAutoComplete__tf_main"
-                            onChange={this.handleChange}
-                            label="Iigabefäld"
-                            helperText="Wenn da inetippsch kriegsch paar passendi Vorschläg! :)"
-                            onKeyPress={this.handleKeyPress}
-                            value={this.state.input}
-                        >
-                        </TextField>
+                
+                    <Typography variant="h5">Hinzuefüege</Typography>
+                    <Divider className="Divider"></Divider>
+                    <Grid className="TobiAutoComplete__Grid" container spacing={8} alignItems="flex-end" alignContent="center" justify="space-between">
+                        <Grid item xs={9}>
+                            <TextField
+                                autoFocus
+                                className="TobiAutoComplete__tf_main"
+                                onChange={this.handleChange}
+                                label="Iigabefäld"
+                                helperText="Wenn da inetippsch kriegsch paar passendi Vorschläg! :)"
+                                onKeyPress={this.handleKeyPress}
+                                value={this.state.input}
+                            >
+                            </TextField>
+                        </Grid>
 
-                        <Button variant='contained' color='primary' onClick={() => {
-                            this.addNewItemByKeyPress(this.state.input)
-                        }}>Hinzuefüege-böttön</Button>
+                        <Grid item xs className="TobiAutoComplete__Grid_Item">
+                            <MediaQuery query="(orientation: landscape)">
+                                <Button className="TobiAutoComplete__btnAdd" variant='contained' color='primary' onClick={() => {
+                                    this.addNewItemByKeyPress(this.state.input)
+                                }}>Hinzuefüege-böttön</Button>
+                            </MediaQuery>
 
-                        <div className="TobiAutoComplete__container_suggestions">
-                            {this.state.output.map((arrayEntry, index) => {
-                                return (
-                                    <Chip
-                                        key={index}
-                                        className="Chip"
-                                        label={this.addEllipsisToName(arrayEntry.name)}
-                                        color={arrayEntry.color}
-                                        onClick={() => {
-                                            this.addNewItemByClick(arrayEntry.name);
-                                        }} />
-                                )
-                            })}
-                        </div>
+                            <MediaQuery query="(orientation: portrait)">
+                                <Button className="TobiAutoComplete__btnAdd" variant='contained' color='primary' onClick={() => {
+                                    this.addNewItemByKeyPress(this.state.input)
+                                }}><AddIcon /> </Button>
+                            </MediaQuery>
+                        </Grid>
+                    </Grid>
 
-
+                    <div className="TobiAutoComplete__container_suggestions">
+                        {this.state.output.map((arrayEntry, index) => {
+                            return (
+                                <Chip
+                                    key={index}
+                                    className="Chip"
+                                    label={this.addEllipsisToName(arrayEntry.name)}
+                                    color={arrayEntry.color}
+                                    onClick={() => {
+                                        this.addNewItemByClick(arrayEntry.name);
+                                    }} />
+                            )
+                        })}
                     </div>
+
                 </Paper>
             </div>
         )

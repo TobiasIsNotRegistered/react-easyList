@@ -1,9 +1,10 @@
 import React from 'react';
-import { Paper, Chip, Avatar, Typography } from '@material-ui/core';
+import { Paper, Chip, Avatar, Typography, Divider } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 
 
 const maxLengthSuggestion = 25;
+
 function addEllipsisToName(name) {
     if (name.length > maxLengthSuggestion) {
         name = name.substring(0, maxLengthSuggestion) + "...";
@@ -15,9 +16,13 @@ function addEllipsisToName(name) {
 function ListView(props) {
 
     if (props.list && props.list.items && props.list.items.length > 0) {
+        // the supplied list is reversed in order to display the last item first. The index has to be reversed as well.
         return (
             <Paper className="Paper">
-                {props.list.items.map((item, index) => {
+            <Typography variant="h5">{props.list.name}</Typography>
+            <Divider className="Divider"></Divider>
+                {props.list.items.slice(0).reverse().map((item, index) => {
+                    index = props.list.items.length - 1 - index;
                     let _color;
                     let state = item.checked % 3;
                     switch (state) {
@@ -45,12 +50,16 @@ function ListView(props) {
                         </Chip>
                     )
                 })}
+                
+                <Typography variant="subtitle2">das sötti alles sii :) </Typography>
             </Paper>
         )
     } else {
-        return (<Paper className="Paper">
-            <Typography variant='subtitle1'>Häh? Lääri listä?</Typography>
-        </Paper>)
+        return (
+            <Paper className="Paper">
+                <Typography variant='h5'>Häh? Lääri listä?</Typography>
+                <Typography variant='subtitle1'>Check mal dis Internet.</Typography>
+            </Paper>)
     }
 }
 

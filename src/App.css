@@ -1,70 +1,98 @@
-body{
-  margin: 0 !important;
+body {
+    margin: 0 !important;
 }
 
 .AppBar {
-  justify-content: space-between;
-  color: #ffffff;
- 
+    justify-content: space-between;
+    color: #ffffff;
 }
 
-.App{
-  
-  height: 100vh;
+.App {
+    height: 100vh;
 }
 
-.editCurrentListBtn{
-  float:right;
-  margin-top: 10px! important;  
-  margin-right: 25px !important;
-  margin-bottom: 25px !important;
+.editCurrentListBtn {
+    float: right;
+    margin-top: 10px! important;
+    margin-right: 25px !important;
+    margin-bottom: 25px !important;
 }
 
-.addNewListBtn{
-  float:right;
-  margin-top: 10px! important;
+.addNewListBtn {
+    float: right;
+    margin-top: 10px! important;
 }
 
-.Divider{
-  margin-top: 9px !important;
-  margin-bottom: 10px !important;
+.Divider {
+    margin-top: 1vh !important;
+    margin-bottom: 2vh !important;
 }
 
 .LoginFragment__Btns {
-  margin-top: 25px !important;
-  margin-left: 10px !important;
+    margin-top: 25px !important;
+    margin-left: 10px !important;
 }
 
-.Paper{
-  padding: 20px;
-  margin: 20px; 
+.Paper {
+    padding: 20px;
+    margin: 20px;
+    margin-bottom: 0;
+    border-radius: 0px !important;
+    border-left: 4px solid #f44336;
 }
 
-.TobiAutoComplete__tf_main{
-  margin: 20px;
-  width: 100%;
-  margin-bottom: 15px !important;
+@media screen and (max-width: 600px) {
+    .Paper {
+        margin: 8px;
+        margin-bottom: 0;
+        padding: 10px;
+        border-radius: 0px !important;
+    }
 }
 
-.TobiAutoComplete__container_suggestions{
-  margin-top: 15px;
+.TobiAutoComplete {
+    height: 100%;
 }
 
-.Chip{
-  margin: 5px;
+.TobiAutoComplete__tf_main {
+    width: 100%;
+    margin: 20px;
+    margin-bottom: 15px !important;
+    display: inline-block;
 }
 
-.LoginFragment{
-  padding: 25px;
+.TobiAutoComplete__container_suggestions {
+    margin-top: 2px;
+    padding-top: 2vh;
+}
+
+.TobiAutoComplete__Grid {
+    width: 100%;
+    vertical-align: middle;
+}
+
+.TobiAutoComplete__Grid_Item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+}
+
+.Chip {
+    margin: 5px;
+}
+
+.LoginFragment {
+    padding: 25px;
 }
 
 .LoginFragment:first-child {
-  display: block;
-  margin: 15px;
+    display: block;
+    margin: 15px;
 }
 
-
-.ListsFragment{
-  margin: 12px 25px 0 25px;
-  width: 200px;
+.ListsFragment {
+    margin: 12px 25px 0 25px;
+    width: 200px;
 }

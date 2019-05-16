@@ -7,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle'
+import StatusContainer from './StatusContainer';
 
 class ListContainer extends React.Component {
     constructor(props) {
@@ -59,6 +60,8 @@ class ListContainer extends React.Component {
 
                 <ListView list={this.props.list} removeItem={(index) => this.removeItemFromList(index)} checkItem={(index) => this.setItemAsChecked(index)}></ListView>
 
+                <StatusContainer actions={this.props.actions}/>
+                
                 <Fab className="editCurrentListBtn" color='primary' onClick={() => this.handleClickOpenFormDialog()}><EditIcon /></Fab>
 
                 <Dialog
